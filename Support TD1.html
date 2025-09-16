@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Initiation à R: TD n°1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Support TD1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Support TD1_files/libs/quarto-html/quarto.js"></script>
+<script src="Support TD1_files/libs/quarto-html/popper.min.js"></script>
+<script src="Support TD1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Support TD1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Support TD1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Support TD1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Support TD1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Support TD1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Support TD1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#objectifs" id="toc-objectifs" class="nav-link active" data-scroll-target="#objectifs">Objectifs</a></li>
+  <li><a href="#valeurs-fondamentales" id="toc-valeurs-fondamentales" class="nav-link" data-scroll-target="#valeurs-fondamentales">Valeurs fondamentales</a></li>
+  <li><a href="#mise-en-situation-directe" id="toc-mise-en-situation-directe" class="nav-link" data-scroll-target="#mise-en-situation-directe">Mise en situation directe</a>
+  <ul>
+  <li><a href="#i.-pourquoi-r-comment-télécharger-pourquoi-r-studio" id="toc-i.-pourquoi-r-comment-télécharger-pourquoi-r-studio" class="nav-link" data-scroll-target="#i.-pourquoi-r-comment-télécharger-pourquoi-r-studio">I. Pourquoi R ? Comment télécharger? Pourquoi R studio?</a></li>
+  <li><a href="#ii.-premier-contact-avec-r-studio" id="toc-ii.-premier-contact-avec-r-studio" class="nav-link" data-scroll-target="#ii.-premier-contact-avec-r-studio">II. Premier contact avec R studio</a>
+  <ul>
+  <li><a href="#mettez-vous-à-laise" id="toc-mettez-vous-à-laise" class="nav-link" data-scroll-target="#mettez-vous-à-laise">0. Mettez vous à l’aise</a></li>
+  <li><a href="#la-première-chose-à-faire-créer-un-projet" id="toc-la-première-chose-à-faire-créer-un-projet" class="nav-link" data-scroll-target="#la-première-chose-à-faire-créer-un-projet">1. La première chose à faire: créer un projet</a></li>
+  <li><a href="#la-deuxième-chose-à-faire-sorganiser" id="toc-la-deuxième-chose-à-faire-sorganiser" class="nav-link" data-scroll-target="#la-deuxième-chose-à-faire-sorganiser">2. La deuxième chose à faire : s’organiser</a>
+  <ul class="collapse">
+  <li><a href="#a.-créer-les-3-fichiers-dans-longlet-files-en-bas-à-droite" id="toc-a.-créer-les-3-fichiers-dans-longlet-files-en-bas-à-droite" class="nav-link" data-scroll-target="#a.-créer-les-3-fichiers-dans-longlet-files-en-bas-à-droite">a. Créer les 3 fichiers dans l’onglet “Files” en bas à droite</a></li>
+  <li><a href="#b.-créer-un-script" id="toc-b.-créer-un-script" class="nav-link" data-scroll-target="#b.-créer-un-script">b. Créer un script</a></li>
+  </ul></li>
+  <li><a href="#la-troisième-chose-à-faire-charger-les-packages" id="toc-la-troisième-chose-à-faire-charger-les-packages" class="nav-link" data-scroll-target="#la-troisième-chose-à-faire-charger-les-packages">3) La troisième chose à faire: charger les packages</a></li>
+  </ul></li>
+  <li><a href="#iii.-importer-des-bases-de-données" id="toc-iii.-importer-des-bases-de-données" class="nav-link" data-scroll-target="#iii.-importer-des-bases-de-données">III. Importer des bases de données</a>
+  <ul>
+  <li><a href="#importer-la-première-base-nhanes.xlsx" id="toc-importer-la-première-base-nhanes.xlsx" class="nav-link" data-scroll-target="#importer-la-première-base-nhanes.xlsx">1) Importer la première base: nhanes.xlsx</a>
+  <ul class="collapse">
+  <li><a href="#a.-fondamentaux-objets-vecteurs-dataframes" id="toc-a.-fondamentaux-objets-vecteurs-dataframes" class="nav-link" data-scroll-target="#a.-fondamentaux-objets-vecteurs-dataframes">a. Fondamentaux: Objets, vecteurs, dataframes</a></li>
+  <li><a href="#b.-essayons-de-vraiment-comprendre-cette-première-commande" id="toc-b.-essayons-de-vraiment-comprendre-cette-première-commande" class="nav-link" data-scroll-target="#b.-essayons-de-vraiment-comprendre-cette-première-commande">b. Essayons de vraiment comprendre cette première commande</a></li>
+  </ul></li>
+  <li><a href="#importer-la-deuxième-base" id="toc-importer-la-deuxième-base" class="nav-link" data-scroll-target="#importer-la-deuxième-base">2) Importer la deuxième base</a></li>
+  </ul></li>
+  <li><a href="#iv.-joindre-des-bases-de-données" id="toc-iv.-joindre-des-bases-de-données" class="nav-link" data-scroll-target="#iv.-joindre-des-bases-de-données">IV. Joindre des bases de données</a>
+  <ul>
+  <li><a href="#pourquoi" id="toc-pourquoi" class="nav-link" data-scroll-target="#pourquoi">0. Pourquoi ?</a></li>
+  <li><a href="#la-première-chose-à-faire-copier-les-dataframes-dans-un-nouvel-objet-avec-un-nom-court" id="toc-la-première-chose-à-faire-copier-les-dataframes-dans-un-nouvel-objet-avec-un-nom-court" class="nav-link" data-scroll-target="#la-première-chose-à-faire-copier-les-dataframes-dans-un-nouvel-objet-avec-un-nom-court">1. La première chose à faire : copier les dataframes dans un nouvel objet avec un nom court</a></li>
+  <li><a href="#la-deuxième-chose-à-faire-décrire-succintement-les-données" id="toc-la-deuxième-chose-à-faire-décrire-succintement-les-données" class="nav-link" data-scroll-target="#la-deuxième-chose-à-faire-décrire-succintement-les-données">2. La deuxième chose à faire : décrire succintement les données</a></li>
+  <li><a href="#la-troisième-chose-à-faire-vérifier-les-différences-entre-les-dataframes" id="toc-la-troisième-chose-à-faire-vérifier-les-différences-entre-les-dataframes" class="nav-link" data-scroll-target="#la-troisième-chose-à-faire-vérifier-les-différences-entre-les-dataframes">3. La troisième chose à faire : vérifier les différences entre les dataframes</a></li>
+  <li><a href="#quatrième-chose-à-faire-savoir-ce-quon-veut-et-exécuter" id="toc-quatrième-chose-à-faire-savoir-ce-quon-veut-et-exécuter" class="nav-link" data-scroll-target="#quatrième-chose-à-faire-savoir-ce-quon-veut-et-exécuter">4. Quatrième chose à faire: savoir ce qu’on veut et exécuter</a></li>
+  <li><a href="#enregistrer-notre-environnement-tout-nos-objets" id="toc-enregistrer-notre-environnement-tout-nos-objets" class="nav-link" data-scroll-target="#enregistrer-notre-environnement-tout-nos-objets">5. Enregistrer notre environnement = tout nos objets</a></li>
+  </ul></li>
+  <li><a href="#v.-ce-quon-aurai-pu-faire-facilement-avec-tidyverse-à-ce-stade" id="toc-v.-ce-quon-aurai-pu-faire-facilement-avec-tidyverse-à-ce-stade" class="nav-link" data-scroll-target="#v.-ce-quon-aurai-pu-faire-facilement-avec-tidyverse-à-ce-stade">V. Ce qu’on aurai pu faire facilement avec tidyverse à ce stade</a>
+  <ul>
+  <li><a href="#tidyverse" id="toc-tidyverse" class="nav-link" data-scroll-target="#tidyverse">1. Tidyverse</a>
+  <ul class="collapse">
+  <li><a href="#a.-la-logique-tidyverse" id="toc-a.-la-logique-tidyverse" class="nav-link" data-scroll-target="#a.-la-logique-tidyverse">a. La logique tidyverse</a></li>
+  <li><a href="#b.-le-pipe" id="toc-b.-le-pipe" class="nav-link" data-scroll-target="#b.-le-pipe">b. Le pipe</a></li>
+  </ul></li>
+  <li><a href="#trouver-facilement-la-variable-education" id="toc-trouver-facilement-la-variable-education" class="nav-link" data-scroll-target="#trouver-facilement-la-variable-education">2. Trouver facilement la variable Education</a></li>
+  <li><a href="#filtrer-le-dataframe-d_educ-pour-quil-naffiche-que-les-données-venant-de-la-première-vague-de-survey-avant-de-le-joindre." id="toc-filtrer-le-dataframe-d_educ-pour-quil-naffiche-que-les-données-venant-de-la-première-vague-de-survey-avant-de-le-joindre." class="nav-link" data-scroll-target="#filtrer-le-dataframe-d_educ-pour-quil-naffiche-que-les-données-venant-de-la-première-vague-de-survey-avant-de-le-joindre.">3. Filtrer le dataframe d_educ pour qu’il n’affiche que les données venant de la première vague de survey avant de le joindre.</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Initiation à R: TD n°1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<style>
+h3 {
+  margin-top: 4em;  /* espace avant chaque sous-titre h3 */
+}
+
+h4 {
+  margin-top: 2em;  /* espace avant chaque sous-titre h3 */
+}
+
+h3 {
+  border: 3px solid black;
+  border-radius: 35px;
+  padding: 1em;
+}
+
+h4 {
+  display: inline-block;
+  border: 3px solid black;
+  border-radius: 35px;
+  padding: 0.5em;
+}
+
+h5 {
+  display: inline-block;
+  border: 2px solid grey;
+  border-radius: 35px;
+  padding: 0.5em;
+}
+
+h6 {
+  display: inline-block;
+  border: 2px dotted gray;
+  border-radius: 35px;
+  padding: 0.5em;
+  color: grey;
+}
+
+
+/* ——— Ajouts pour le pliage des sections ——— */
+h3.foldable, h4.foldable, h5.foldable, h6.foldable {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2em; /* espace pour la flèche */
+}
+h3.foldable::after, h4.foldable::after, h5.foldable::after, h6.foldable::after {
+  content: "▾";              /* flèche vers le bas = ouvert */
+  position: absolute;
+  right: 0.6em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 600;
+}
+
+/* Cache tout le contenu d’une section pliée, sauf son titre */
+section.folded > :not(h2):not(h3):not(h4):not(h5):not(h6) { display: none; }
+/* Cache les sous-sections imbriquées quand le parent est plié */
+section.folded > section { display: none; }
+/* Flèche fermée */
+section.folded > .foldable::after { content: "▸"; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Niveaux de titres repliables (modifie si besoin)
+  const foldableLevels = [ 3, 4, 5, 6];  // h3..h6
+
+  // Pour plier automatiquement à l’ouverture à partir d’un niveau donné,
+  // mets un nombre (ex: 4 pour plier h4+). Laisse null pour ne rien plier par défaut.
+  const defaultCollapseFromLevel = 3;
+
+  function toggle(sec, heading){
+    const folded = sec.classList.toggle('folded');
+    heading.setAttribute('aria-expanded', String(!folded));
+  }
+
+  foldableLevels.forEach(level => {
+    document.querySelectorAll(`section.level${level}`).forEach(sec => {
+      const heading = sec.querySelector(`:scope > h${level}`);
+      if (!heading) return;
+
+      // Accessibilité + style
+      heading.classList.add('foldable');
+      heading.setAttribute('role', 'button');
+      heading.setAttribute('tabindex', '0');
+      heading.setAttribute('aria-expanded', 'true');
+
+      // Clic (en ignorant le clic sur l’ancre de lien du titre)
+      heading.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        toggle(sec, heading);
+      });
+      // Clavier (Entrée ou Espace)
+      heading.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle(sec, heading);
+        }
+      });
+
+      // État initial (plié/déplié) configurable
+      if (defaultCollapseFromLevel && level >= defaultCollapseFromLevel) {
+        sec.classList.add('folded');
+        heading.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+});
+</script>
+
+<section id="objectifs" class="level2">
+<h2 class="anchored" data-anchor-id="objectifs">Objectifs</h2>
+<ul>
+<li><p>R: pourquoi R? Comment télécharger? Pourquoi R Studio ?</p></li>
+<li><p>Travailler proprement et de façon organisée</p></li>
+<li><p>Se familiariser avec l’interface de R Studio</p></li>
+<li><p>Comprendre la logique et les fondamentaux de R : objets, vecteurs, listes, data frames</p></li>
+<li><p>Importer plusieurs bases de données et les joindre correctement</p></li>
+<li><p>Introduction au tidyverse</p></li>
+</ul>
+</section>
+<section id="valeurs-fondamentales" class="level2">
+<h2 class="anchored" data-anchor-id="valeurs-fondamentales">Valeurs fondamentales</h2>
+<ul>
+<li>Si Stata est un enfant de 10 ans, R est un enfant de 2 ans à qui il faut tout dire</li>
+</ul>
+<!-- -->
+<ul>
+<li><p>Comprenez ce que vous faites</p></li>
+<li><p>L’apprentissage c’est de l’essai - erreur</p></li>
+<li><p>Ne vous laissez pas emporter par le logiciel : sachez à l’avance ce que vous voulez faire</p></li>
+<li><p>Ne vous laissez pas avoir par les IA, si vous les utilisez maitrisez d’abord le logiciel. Vous perdrez du temps, de l’énergie et vous ferez des erreurs sinon.</p></li>
+</ul>
+</section>
+<section id="mise-en-situation-directe" class="level2">
+<h2 class="anchored" data-anchor-id="mise-en-situation-directe">Mise en situation directe</h2>
+<p><em>C’est votre premier jour de stage, avant même de vous adresser la parole, votre maitre de stage vous envoie les données sur lesquelles vous allez travailler</em>. <em>Il passe la tête à la porte de votre bureau :</em></p>
+<blockquote class="blockquote">
+<p><em>Maitre de stage</em>: T’as reçu? Ah et à cause de toi, puisqu’on doit te “payer” apparamment, on peut plus payer la licence de Stata, travaille sur R stp.</p>
+<p><em>Vous</em>: OK</p>
+<p><em>Maitre de stage:</em> Est ce que tu penses que le niveau d’éducation est lié à l’IMC?</p>
+<p><em>Vous</em>: Je sais pas ?</p>
+<p><em>Maitre de stage:</em> Ben cherche.</p>
+</blockquote>
+<section id="i.-pourquoi-r-comment-télécharger-pourquoi-r-studio" class="level3">
+<h3 class="anchored" data-anchor-id="i.-pourquoi-r-comment-télécharger-pourquoi-r-studio">I. Pourquoi R ? Comment télécharger? Pourquoi R studio?</h3>
+<ul>
+<li><p>Gratuit</p></li>
+<li><p>Une grande communauté avec beaucoup de ressources</p></li>
+<li><p>Plus grandes possibilités et flexibilité</p></li>
+</ul>
+<p>Ressource créée par Benoit Lepage : <a href="https://benoitlepage.github.io/formationR" class="uri">https://benoitlepage.github.io/formationR</a><br>
+Ressource incroyable de Larmarange : <a href="https://larmarange.github.io/analyse-R/" class="uri">https://larmarange.github.io/analyse-R/</a></p>
+</section>
+<section id="ii.-premier-contact-avec-r-studio" class="level3">
+<h3 class="anchored" data-anchor-id="ii.-premier-contact-avec-r-studio">II. Premier contact avec R studio</h3>
+<section id="mettez-vous-à-laise" class="level4">
+<h4 class="anchored" data-anchor-id="mettez-vous-à-laise">0. Mettez vous à l’aise</h4>
+<p>Le confort de travail est largement sous estimé: changez le thème, mettez les fonctions en avant, mettez des couleurs au parenthèses, cherchez et trouvez votre façon de travailler.</p>
+<p><em><strong>Tools</strong>-&gt;Global options-&gt;Code-&gt;Display-&gt;Syntax<br>
+<strong>Tools</strong>-&gt;Global options</em>-&gt;<em>Appearance</em></p>
+<p>Vous pouvez même changer la taille et la disposition des fenêtres.</p>
+</section>
+<section id="la-première-chose-à-faire-créer-un-projet" class="level4">
+<h4 class="anchored" data-anchor-id="la-première-chose-à-faire-créer-un-projet">1. La première chose à faire: créer un projet</h4>
+<p>Tout en haut à droite -&gt; <strong>New project</strong>-&gt; New Directory (*=dossier de travail)-&gt; New project -&gt; Nommez le fichier</p>
+<p>Le projet permet d’ouvrir tout en même temps, permet de rester organiser dans un fichier directeur. Lorsque vous allez enregistrer quoi que ce soit dans R, tout va aller dans le dossier directeur ou dans un sous dossier que vous aurez créer.<br>
+C’est très important pour s’y retrouver quand vous avez plusieurs projets ou que vous devez transmettre votre travail à quelqu’un qui va continuer.</p>
+</section>
+<section id="la-deuxième-chose-à-faire-sorganiser" class="level4 tabset">
+<h4 class="tabset anchored" data-anchor-id="la-deuxième-chose-à-faire-sorganiser">2. La deuxième chose à faire : s’organiser</h4>
+<p>Dans R, vous pouvez créer et organiser vos fichier, croyez moi sur parole c’est pratique, nous verrons plus tard pourquoi.</p>
+<section id="a.-créer-les-3-fichiers-dans-longlet-files-en-bas-à-droite" class="level5">
+<h5 class="anchored" data-anchor-id="a.-créer-les-3-fichiers-dans-longlet-files-en-bas-à-droite">a. Créer les 3 fichiers dans l’onglet “Files” en bas à droite</h5>
+<p>Au début de tout projet, pour rester organisé vous voulez toujours créer 3 Fichiers:</p>
+<ul>
+<li><p>un pour vos <strong>Scripts</strong> ou il y aura vos codes</p></li>
+<li><p>un dossier <strong>Data</strong> ou il y aura les bases de données et l’environnement R</p></li>
+<li><p>un dossier <strong>Results</strong> pour vos Figures et Tableaux.</p>
+<p>Vous pouvez le faire dans R.</p></li>
+</ul>
+</section>
+<section id="b.-créer-un-script" class="level5">
+<h5 class="anchored" data-anchor-id="b.-créer-un-script">b. Créer un script</h5>
+<p>En haut à gauche cliquez sur la <strong><em>page blanche avec un + vert</em></strong> et choissisez <strong><em>R Script</em>.</strong> Le script permet de retrouver les fonctions qu’on écrit aussi pour que notre travail soit reproductible.</p>
+<p>Pour qu’il soit reproductible il faut l’organiser et l’annoter. Vous devez être capable de trouver les éléments rapidement, de suivre votre plan d’analyse et de savoir ce que vous faites. Quelqu’un qui ne connait pas R devrait en théorie savoir lire votre script. (J’exagère un peu mais on m’a déjà dit et demandé ça, les plus vieux travaillent souvent sur SAS).</p>
+<section id="organiser-son-script" class="level6">
+<h6 class="anchored" data-anchor-id="organiser-son-script">Organiser son script :</h6>
+<p>Avec des titres et la date de création et de dernière modification :<br>
+- avec <code>#</code> en début de ligne pour indiquer que ce sont des commentaires et pas du code à exécuter<br>
+- <code>"----"</code>Permet de dire à R que c’est le titre d’une section<br>
+- Vous pouvez retrouver les sections en cliquant sur le bouton <strong><em>Outline</em></strong> en haut à droite de la fenêtre ou se trouve le script</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________________________________________________________________----</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________________________________________________________________----</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________________________________________________________________----</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#           STAGE M2: TITRE DU SCRIPT ----</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________________________________________________________________----</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________________________________________________________________----</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________________________________________________________________----</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Date de création: </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Date de dernière modification: </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 0. Setup ----</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#__________----</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## a. Packages à charger----</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## b. Environnement à charger----</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________________________________________________________________----</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Importation de la base ----</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#___________________________----</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="do">## a. Sous titre 1----</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="do">## b. Sous titre 2----</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">## c. Sous titre 3----</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">### i. sous-sous titre----</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#___________________________________________________________________________----</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Section 2 ----</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#___________________________----</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="do">## a. Sous titre 1----</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="do">## b. Sous titre 2----</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="do">## c. Sous titre 3----</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="do">### i. sous-sous titre----</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="la-troisième-chose-à-faire-charger-les-packages" class="level4">
+<h4 class="anchored" data-anchor-id="la-troisième-chose-à-faire-charger-les-packages">3) La troisième chose à faire: charger les packages</h4>
+<p>Les packages sont là pour rajouter des fonctions qui ne sont pas disponible dans r à la base.<br>
+C’est un des grands avantages de R. On peut les installer directement dans R en cliquant sur Install. ou avec la fonction <code>install.packages()</code>.</p>
+<p>Certains packages permettent de changer completement la logique de R, ou peuvent énormément aider pour créer des tableaux presque près pour présenter des résultats, faire des analyses plus poussées, des graphiques etc..</p>
+<p>On peut par exemple installer le fameux package tidyverse qui change notre façon de coder et qui (selon moi) rend les choses plus simples et plus logiques:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(tidyverse) <span class="co"># tapez cette commande dans la console (fenêtre en bas à gauche)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Voyez au passage que les fonctions dans R comprennent toujours des parenthèses après le nom de la fonction.</p>
+<p>Pour pouvoir utiliser les fonctions d’un package il faut le “charger” au début de la session, pour eviter à R d’utiliser toutes ses ressources pour charger toutes les fonction installés à chaque fois. Pour charger un package utilisez la fonction <code>library()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>D’ailleurs, si vous avez une question sur une fonction, vous pouvez demander directement a r studio avec un simple <code>?</code> avant le nom de la fonction:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>?tidyverse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>C’est en fait le premier réflexe qu’on doit avoir quand on veut savoir comment marche une fonction, avant internet ou de se ruer sur les chatbots. Pour gagner du temps.</p>
+<p>Nous y reviendrons.</p>
+<p>Je vous conseille de mettre toutes les commandes <code>library()</code> en début de script comme suit:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup----</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#______----</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(crosstable)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="iii.-importer-des-bases-de-données" class="level3">
+<h3 class="anchored" data-anchor-id="iii.-importer-des-bases-de-données">III. Importer des bases de données</h3>
+<p>Pour cela vous pouvez cliquer sur <em>Import Dataset</em> dans la fenêtre en haut à droite: Environment.<br>
+Mais pour que cela fonctionne, il faut savoir sous quel extension est votre base.</p>
+<p><em>.csv</em> -&gt; from text (readr) (coma seperated values), s’ouvre avec excel attention.<br>
+<em>.xls ou .xlsx</em> -&gt; from excel<br>
+Possible stata, sass, spss</p>
+<section id="importer-la-première-base-nhanes.xlsx" class="level4">
+<h4 class="anchored" data-anchor-id="importer-la-première-base-nhanes.xlsx">1) Importer la première base: nhanes.xlsx</h4>
+<p><em>Import Dataset</em>-&gt; From excel-&gt; Browse</p>
+<p>Regarder en bas à droite: cela va créer automatiquement le code pour importer la base de donnée, que vous auriez pu faire pour importer. Il y a également des options interessantes que vous pouvez tester, vous pouvez aussi changer le nom d’apparition dans l’environnement, regardez comment cela change la fonction.</p>
+<p><em>Cliquez sur OK</em> -&gt; dans la fenêtre en haut à droite <em>Environment</em> on voit que les datas apparaissent sous le nom qu’on a choisi.<br>
+Félicitation, vous venez de créer votre premier <code>Objet</code></p>
+<section id="a.-fondamentaux-objets-vecteurs-dataframes" class="level5">
+<h5 class="anchored" data-anchor-id="a.-fondamentaux-objets-vecteurs-dataframes">a. Fondamentaux: Objets, vecteurs, dataframes</h5>
+<section id="les-objets" class="level6">
+<h6 class="anchored" data-anchor-id="les-objets"><em>Les objet</em>s</h6>
+<ul>
+<li><strong>C’est quoi ?</strong></li>
+</ul>
+<p>Un <code>Objet</code> c’est le fourre tout de R.<br>
+Vous pouvez stocker ce que vous voulez dans un objet R: des données, des fonctions, une suite de chiffres, chaines de charactères, un peu ce que vous voulez…</p>
+<ul>
+<li><strong>Ca sert à quoi ?</strong></li>
+</ul>
+<p>Ca sert à stocker quelque chose mais aussi à s’y retrouver et s’organiser, parce qu’en nommant quelque chose pour le retrouver on va pouvoir s’y référer dans le code.</p>
+<blockquote class="blockquote">
+<p><em>Personnellement mes données sont notés “d_description”, mes tableaux “t_description”, mes fonction “f_description” mes</em> figures <em>“p_description” (p pour plot) etc…</em></p>
+</blockquote>
+<ul>
+<li><strong>Comment on le créé?</strong></li>
+</ul>
+<p>Pour créer un objet dans R c’est le fameux <code>&lt;-</code> .<br>
+<em>Le signe <code>=</code> marche aussi mais est moins recommandé car sert pour d’autres choses.</em></p>
+<ul>
+<li><strong>Comment on s’en sert?</strong><br>
+</li>
+</ul>
+<blockquote class="blockquote">
+<p>Exemples:</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bonjour<span class="ot">&lt;-</span><span class="st">"Bonjour, je m'appelle Richard"</span> <span class="co"># les chaines de caractères sont toujours entre "" </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>bonjour <span class="co"># si vous tapez bonjour dans la console ou le script, le message va s'afficher</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Bonjour, je m'appelle Richard"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ad<span class="ot">=</span><span class="dv">2</span><span class="sc">+</span><span class="dv">2</span>  <span class="co">#ça peut être aussi un résultat d'une opération</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ad <span class="co"># ça va afficher 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<p>Si on tape le nom de l’objet dans lequel on a mis nos données:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>nhanes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>R va essayer de nous l’afficher en entier mais se limitera tout seul (et heureusement).<br>
+Si jamais on veut vérifier que les données ont bien été importées, on peut cliquer sur le petit icone de <strong>Tableau</strong> dans la fenêtre environment.</p>
+<p>Pour savoir quelle de quel classe est l’objet on pourra faire la fonction <code>class</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(nhanes)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(ad)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(bonjour)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="vecteurs" class="level6">
+<h6 class="anchored" data-anchor-id="vecteurs"><em>Vecteurs</em></h6>
+<ul>
+<li><strong>C’est quoi ?</strong></li>
+</ul>
+<p>Vous pouvez aussi stocker des <code>vecteurs</code> dans des objets : un <code>vecteur</code> est une suite de truc dans un ordre bien précis mais de même type.<br>
+</p>
+<blockquote class="blockquote">
+<p>C’est à dire une suite de valeurs numériques est un <code>vecteur</code>, une suite de valeurs en texte est un <code>vecteur</code> mais une suite de nombre et de texte n’est pas un vecteur mais une <code>liste</code> !</p>
+</blockquote>
+<p>Ce qui veut aussi dire que les variables dans vos données sont des <code>vecteurs</code>, ils ont un seul type de données et on un ordre précis défini par les individu.</p>
+<ul>
+<li><strong>Ca sert à quoi ?</strong></li>
+</ul>
+<p>Un vecteur c’est donc souvent une variable mais il sert aussi souvent d’<code>argument</code> dans une <code>fonction.</code></p>
+<ul>
+<li><strong>Comment on créé un vecteur ?</strong></li>
+</ul>
+<p>Pour créer un vecteur on utilise la fonction <code>c()</code></p>
+<blockquote class="blockquote">
+<p><code>c</code> pour “combine”</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vecteur_nul_qui_sert_a_rien<span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>vecteur_nul_qui_sert_a_rien</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 4 5 6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vecteur_texte<span class="ot">=</span><span class="fu">c</span>(<span class="st">"Bonjour"</span>, <span class="st">"Salut"</span>, <span class="st">"Hello"</span>, <span class="st">"Hey"</span>, <span class="st">"Salud"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>vecteur_texte</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Bonjour" "Salut"   "Hello"   "Hey"     "Salud"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(vecteur_texte) <span class="co"># la longueur du vecteur</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Remarques:</p>
+<ul>
+<li><p>Les vecteurs se mettent dans la section <em>Values</em> de la fenêtre environment</p></li>
+<li><p>Vous avez un aperçu de la classe et de la longueur du vecteur dans cette fenêtre aussi et des premières valeurs</p></li>
+</ul>
+</blockquote>
+</section>
+<section id="data-frames" class="level6">
+<h6 class="anchored" data-anchor-id="data-frames">Data frames</h6>
+<p>Un <code>data.frame</code> c’est un ensemble de vecteurs, c’est un tableau de données en fait.<br>
+Il aura donc 2 dimension :</p>
+<ul>
+<li><p>une horizontale : c’est les vecteurs côte à côte (les variables)</p></li>
+<li><p>une verticale: c’est l’ordre des valeurs dans chaque vecteur</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(nhanes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6779   76</code></pre>
+</div>
+</div>
+<p>Donne le nombre de lignes (souvent d’individus) et de colonnes (nombre de variables).<br>
+</p>
+<blockquote class="blockquote">
+<p><em>C’est déjà écrit dans la fenêtre environnement</em></p>
+</blockquote>
+</section>
+</section>
+<section id="b.-essayons-de-vraiment-comprendre-cette-première-commande" class="level5">
+<h5 class="anchored" data-anchor-id="b.-essayons-de-vraiment-comprendre-cette-première-commande">b. Essayons de vraiment comprendre cette première commande</h5>
+<blockquote class="blockquote">
+<p><em>Le code qui s’est affiché dans la console tout à l’heure quand on a importé</em></p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A copier coller dans le script pour la REPRODUCTIBILITE</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Importation de la première base----</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#________________________________----</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>nhanes <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"TD1/Data/nhanes.xlsx"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="première-fonction-libraryreadxl" class="level6">
+<h6 class="anchored" data-anchor-id="première-fonction-libraryreadxl">Première fonction: <code>library(readxl)</code></h6>
+<p>Une fonction dans un r est toujours sous la forme <code>nomdelafonction(argument)</code>.<br>
+Un <code>argument</code> c’est une précision, une option pour dire à la fonction ce qu’on veut.<br>
+<br>
+Pour cette fonction on pourrait lire en français <code>library()</code>=“<em>charge le package</em>” qui s’appelle <code>readxl.</code></p>
+</section>
+<section id="deuxième-fonction-nhanes-read_exceltd1datanhanes.xlsx" class="level6">
+<h6 class="anchored" data-anchor-id="deuxième-fonction-nhanes-read_exceltd1datanhanes.xlsx">Deuxième fonction: <code>nhanes&lt;-read_excel("TD1/Data/nhanes.xlsx")</code></h6>
+<ul>
+<li><p><code>read_excel()</code> est la fonction</p></li>
+<li><p><code>"TD1/Data/nhanes.xlsx"</code> est l’argument.<br>
+Cet argument est entre <code>""</code> car il va être pris dans la fonction en tant que texte.</p></li>
+</ul>
+<p>Pour voir l’ensemble des arguments qu’il est possible de mettre dans la fonction on peut faire <code>?read_excel ou help("read_excel")</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ne retenez pas tout ça c'est juste pour comprendre le fonctionnement </span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(   path,  </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">sheet =</span> <span class="cn">NULL</span>, </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">range =</span> <span class="cn">NULL</span>, </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">col_names =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">col_types =</span> <span class="cn">NULL</span>,  </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">na =</span> <span class="st">""</span>, </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">trim_ws =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">skip =</span> <span class="dv">0</span>, </span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_max =</span> <span class="cn">Inf</span>, </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">guess_max =</span> <span class="fu">min</span>(<span class="dv">1000</span>, n_max), </span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">progress =</span> <span class="fu">readxl_progress</span>(), </span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">.name_repair =</span> <span class="st">"unique"</span> ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notez :</p>
+<ul>
+<li><p>qu’entre chaque argument il y a une <code>,</code>.pour dire à R “je change d’argument”.</p></li>
+<li><p>que si on précise le nom d’un argument il faut le signe <code>=</code> pour lui donner</p></li>
+</ul>
+<!-- -->
+<ul>
+<li>que si nous ne précisons pas de quel argument nous parlons, R comprendra qu’il s’agit du premier, puis du deuxième etc.. dans l’ordre ou il est écrit dans l’aide.</li>
+</ul>
+<p>Certains arguments <strong>doivent</strong> être précisés : le logiciel ne veut pas décider à notre place quel fichier lire, donc on doit précisé <code>path</code>, c’est à dire l’emplacement du fichier.<br>
+D’autres ont des <strong>valeurs par défaut :</strong> si on ne précise pas, la fonction prendra ces valeurs comme argument.</p>
+<p>Dans notre exemple :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>nhanes<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"TD1/Data/nhanes.xlsx"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Est l’équivalent de :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>nhanes<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="at">path=</span><span class="st">"TD1/Data/nhanes.xlsx"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>Comme c’était le premier argument, nous n’avons pas besoin de préciser <code>path=</code> . R va détecter qu’il s’agit du premier argument puisque c’est le seul.</p>
+</blockquote>
+<p>C’est aussi l’équivalent de :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(   <span class="at">path=</span><span class="st">"TD1/Data/nhanes.xlsx"</span>,  </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>              <span class="co"># Valeurs par défaut : </span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">sheet =</span> <span class="cn">NULL</span>, <span class="co"># Quelle feuille lire?</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">range =</span> <span class="cn">NULL</span>, <span class="co"># De quelle cellule à quelle cellule?</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">col_names =</span> <span class="cn">TRUE</span>, <span class="co"># Est ce que la première ligne est le nom des var?</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">col_types =</span> <span class="cn">NULL</span>, <span class="co"># Si je veux préciser le type de variable (numérique, texte etc..)</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">na =</span> <span class="st">""</span>,  <span class="co"># Comment sont décrit les données manquantes?</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">trim_ws =</span> <span class="cn">TRUE</span>, <span class="co"># Est ce qu'on garde les espaces vide ?</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">skip =</span> <span class="dv">0</span>, </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_max =</span> <span class="cn">Inf</span>, </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">guess_max =</span> <span class="fu">min</span>(<span class="dv">1000</span>, n_max), </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">progress =</span> <span class="fu">readxl_progress</span>(), </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">.name_repair =</span> <span class="st">"unique"</span> ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p><em>Pour savoir à quoi correspond chaque argument et quoi mettre dedans, lisez la partie Arguments de l’aide.</em></p>
+</blockquote>
+<p>Imaginons qu’on veuille que la première feuille et les 100 premières lignes du fichier on pourra écrire :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># je stocke dans un objet au nom explicite</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>nhanes_100<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"TD1/Data/nhanes.xlsx"</span>, <span class="co"># path</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span>, <span class="co"># numéro de la feuille</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">n_max=</span><span class="dv">100</span>) <span class="co"># arrête toi à 100 lignes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ou pire :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># je stocke dans un objet au nom explicite</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>nhanes_100<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"TD1/Data/nhanes.xlsx"</span>,<span class="dv">1</span>,<span class="at">n_max=</span><span class="dv">100</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Mais ce sera donc beaucoup plus facile pour moi pour y comprendre quelque chose et pour rester organiser d’écrire :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># je stocke dans un objet au nom explicite</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>nhanes_100<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="at">path=</span> <span class="st">"TD1/Data/nhanes.xlsx"</span>, <span class="co"># path</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sheet=</span><span class="dv">1</span>, <span class="co"># numéro de la feuille</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">n_max=</span><span class="dv">100</span>) <span class="co">#arrête toi à 100 lignes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>IMPORTANT : Pour moi, le fait que chaque argument soit PRECISE et EN DEBUT DE LIGNE me fait gagner un temps considérable quand j’ai beaucoup de fonction ou d’arguments. C’est aussi plus lisible quand on code verticalement (pas besoin de scroll horizontallement).</strong></p>
+</blockquote>
+<p>Du coup on ne pourra pas écrire:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># je stocke dans un objet au nom explicite </span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>nhanes_100<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">"TD1/Data/nhanes.xlsx"</span>,             </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">1</span>,              </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">100</span>) <span class="co"># Car il prendra 100 comme le troisième argument qui devrait être une range de cellule. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Le nom des variables et leur type un peu comme describe ou codebook dans stata:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(nhanes)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(nhanes)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(nhanes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Il manque la variable de niveau d’éducation.</p>
+</section>
+</section>
+</section>
+<section id="importer-la-deuxième-base" class="level4">
+<h4 class="anchored" data-anchor-id="importer-la-deuxième-base">2) Importer la deuxième base</h4>
+<blockquote class="blockquote">
+<p>A vous de jouer. Importez la deuxième base.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>data_educ <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"TD1/Data/data_educ.csv"</span>, </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">delim =</span> <span class="st">";"</span>, <span class="at">escape_double =</span> <span class="cn">FALSE</span>, <span class="at">trim_ws =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="iv.-joindre-des-bases-de-données" class="level3">
+<h3 class="anchored" data-anchor-id="iv.-joindre-des-bases-de-données">IV. Joindre des bases de données</h3>
+<section id="pourquoi" class="level4">
+<h4 class="anchored" data-anchor-id="pourquoi">0. Pourquoi ?</h4>
+<blockquote class="blockquote">
+<p><code>names(nhanes_educ)</code> : c’est dans cette base qu’on à le niveau d’éducation.<br>
+On veut donc joindre les deux bases.</p>
+<p><em>Pour exécuter une ligne dans Rstudio, mettez votre curseur sur une ligne du script et faite<br>
+<strong>Ctrl + D</strong></em></p>
+</blockquote>
+<p>Souvent, les bases de données arrivent en plusieurs morceaux pour plusieurs raisons :</p>
+<ul>
+<li><p>des questionnaires différents</p></li>
+<li><p>des vagues de réponses différentes</p></li>
+</ul>
+<p>Ce qu’on veut c’est souvent un seul data frame sur lequel travailler.</p>
+<blockquote class="blockquote">
+<p>On doit donc absolument vérifier les différences entre les bases de données<br>
+On doit donc absolument s’assurer qu’on ne modifie pas le dataframe de départ<br>
+Notamment si on fait une erreur de code et qu’on modifie notre base de travail, on doit pouvoir repartir de notre base d’origine.</p>
+</blockquote>
+</section>
+<section id="la-première-chose-à-faire-copier-les-dataframes-dans-un-nouvel-objet-avec-un-nom-court" class="level4">
+<h4 class="anchored" data-anchor-id="la-première-chose-à-faire-copier-les-dataframes-dans-un-nouvel-objet-avec-un-nom-court">1. La première chose à faire : copier les dataframes dans un nouvel objet avec un nom court</h4>
+<p>Il ne faut pas travailler sur la base d’origine au cas ou on aurai fait une erreur.</p>
+<p>De plus, dans R, on doit toujours préciser dans les fonctions sur quelles données on travaille.<br>
+Notamment pour mentionner une variable dans un dataframe, on utilise le signe <code>$</code>.<br>
+Si on travaille en R de base on se retrouve donc à répéter <code>labase$lavariable.</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>nhanes_educ<span class="sc">$</span>Education </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Donc pour travailler, on utilise des noms courts et simples<br>
+Pour copier un objet vers un objet qu’on nomme plus simplement il suffit de faire :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>d<span class="ot">&lt;-</span>nhanes <span class="co"># prend nhanes et met le dans d</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>d<span class="ot">=</span>nhanes <span class="co"># le nouvel objet en premier</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>d_educ<span class="ot">=</span>nhanes_educ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="la-deuxième-chose-à-faire-décrire-succintement-les-données" class="level4">
+<h4 class="anchored" data-anchor-id="la-deuxième-chose-à-faire-décrire-succintement-les-données">2. La deuxième chose à faire : décrire succintement les données</h4>
+<p>Au début vous avez envie de connaitre un peu vos données.</p>
+<blockquote class="blockquote">
+<p>Vous pouvez les parcourir visuellement avec l’icone en forme de tableau dans la fenêtre environnement ou avec la fonction <code>view()</code></p>
+</blockquote>
+<p>Mais vous voulez aussi les décrires vite fait pour vous rendre compte de ce que vous avez entre les mains, comme avec la fonction <code>describe()</code> ou <code>str()</code> .</p>
+<p>Mais aussi la fonction <code>create_report</code> du package <code>DataExplorer</code> qui montre la puissance de R et de ses packages.<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># str </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d) <span class="co"># Mais disponible en cliquant sur la flèche dans environnement</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Describe de Hmisc :</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Hmisc)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(d)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create report de DataExplorer</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DataExplorer)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="fu">create_report</span>(<span class="at">data=</span>d)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="fu">create_report</span>(<span class="at">data=</span>d_educ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="la-troisième-chose-à-faire-vérifier-les-différences-entre-les-dataframes" class="level4">
+<h4 class="anchored" data-anchor-id="la-troisième-chose-à-faire-vérifier-les-différences-entre-les-dataframes">3. La troisième chose à faire : vérifier les différences entre les dataframes</h4>
+<p>Ici on essaie de rajouter la variable de niveau d’éducation à notre base d.<br>
+Si on essaie de rajouter des colonnes à un dataframe il faut qu’ils aient le même nombre de lignes ou qu’on en connaissent les différences.</p>
+<p>Quand on a deux dataframes à joindre il faut toujours vérifier :</p>
+<section id="si-il-y-a-une-différence-de-nombre-de-ligne-entre-les-deux-dataframes" class="level6">
+<h6 class="anchored" data-anchor-id="si-il-y-a-une-différence-de-nombre-de-ligne-entre-les-deux-dataframes">Si il y a une différence de nombre de ligne entre les deux dataframes</h6>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(d)<span class="sc">-</span><span class="fu">nrow</span>(d_educ) <span class="co"># nrow=littéralement nombre de ligne</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1053</code></pre>
+</div>
+</div>
+</section>
+<section id="si-il-y-a-bien-une-ligne-par-id-dans-chaque-dataframe" class="level6">
+<h6 class="anchored" data-anchor-id="si-il-y-a-bien-une-ligne-par-id-dans-chaque-dataframe">Si il y a bien une ligne par ID dans chaque dataframe</h6>
+<p>Pour voir si un élément est écrit plusieurs fois dans une variable, on peut faire la commande <code>duplicated()</code> .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">duplicated</span>(<span class="at">x=</span> d_educ<span class="sc">$</span>ID)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>duplicated</code> va regarder ligne par ligne dans <code>d$ID</code> si la valeur est présente plus d’une fois: Il va dire TRUE à chaque fois que c’est vrai et FALSE à chaque fois que c’est faux, mais c’est pas le résultat qu’on veut. Nous on veut savoir <strong>combien</strong> sont présent plus d’une fois.</p>
+<p>Dans r <code>summary</code> permet de faire un résumé en s’adaptant à l’objet qu’on lui donne en argument.<br>
+Ici il va compter combien sont présent plus d’une fois (TRUE) et combien sont présent qu’une fois (FALSE).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">object=</span><span class="fu">duplicated</span>(<span class="at">x=</span>d_educ<span class="sc">$</span>ID)) <span class="co"># Une fonction dans une fonction !</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Mode   FALSE    TRUE 
+logical    6779    1053 </code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>La fonction dit : “Parcours chaque ligne et dit moi si il y a un dupliqué dans l’ID. Ensuite fait moi un résumé de tes trouvailles”.</p>
+<p>Remarquez que pour les fonctions imbriquées, la logique est un peu inversé par rapport à notre façon de penser:<br>
+Nous pensons d’abord à chercher les doublons puis à faire un résumé alors que R nous fais écrire summary en premier.</p>
+</blockquote>
+<p>Ce chiffre correspond bien à la différences de lignes entre les deux. Il n’y a pas d’individus en plus ou en moins.</p>
+<p>d_educ ne contient pas une ligne par ID mais plusieurs alors que d non :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">duplicated</span>(d<span class="sc">$</span>ID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Mode   FALSE 
+logical    6779 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="quatrième-chose-à-faire-savoir-ce-quon-veut-et-exécuter" class="level4">
+<h4 class="anchored" data-anchor-id="quatrième-chose-à-faire-savoir-ce-quon-veut-et-exécuter">4. Quatrième chose à faire: savoir ce qu’on veut et exécuter</h4>
+<blockquote class="blockquote">
+<p>Votre maitre de stage vous informe que dans la base de données avec le niveau d’éducation, il y a les éléments d’autres vague de réponses mais que nous allons nous interessé seulement à la première. Dans la base nhanes (d), il nous confirme qu’il n’y a que les résultats de la vague 1 (number_survey==1).</p>
+</blockquote>
+<p><strong>Qu’est ce qu’on veut exactement :</strong> En se basant sur le numéro d’ID, joindre le niveau d’éducation de la base d_educ vers les données d en ne gardant que les données de la vague number_survey 1.</p>
+<p>Voici nos options pour joindre les deux dataframes :</p>
+<ul>
+<li><code>inner_join(x, y, by = "col")</code> → garde <strong>seulement les correspondances</strong> (intersection).</li>
+</ul>
+<!-- -->
+<ul>
+<li><p><code>left_join(x, y, by = "col")</code> → garde <strong>toutes les lignes de x</strong> (table de gauche), ajoute ce qui matche dans y</p></li>
+<li><p><code>right_join(x, y, by = "col")</code> → garde <strong>toutes les lignes de y</strong> (table de droite).</p></li>
+</ul>
+<!-- -->
+<ul>
+<li><code>full_join(x, y, by = "col")</code> → garde <strong>toutes les lignes de x et y</strong> (union).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Je choisi left_join</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co">#____________________</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>?left_join</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>d_s1<span class="ot">=</span><span class="fu">left_join</span>(<span class="at">x=</span>d, </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y=</span>d_educ, </span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"number_survey"</span>))</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Description argument par argument : </span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co">#_____________________________________</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>d_s1<span class="ot">=</span><span class="fu">left_join</span>(<span class="at">x=</span>d, <span class="co"># Le premier dataframe dont on veut garder toutes les lignes</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y=</span>d_educ, <span class="co"># Le deuxième dataframe dont on veut sup des lignes</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ID"</span>, <span class="st">"number_survey"</span>)) <span class="co"># On veut garder les lignes si les élément de d_educ ont le même ID et le même nombre de number_survey. Quant on veut mettre plusieurs élément dans un argument, c'est la qu'on utilise le vecteur ! </span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="co"># N'oubliez pas pour verifier: </span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="co">#______________________________</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d_join<span class="sc">$</span>number_survey) <span class="co"># Il ne sont que = 1 !</span></span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary donne ici le résumé d'une variable numérique (donc la description habituelle)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>En français cela donne: “Ajoute dans d les lignes de d_educ qui ont un ID et un number_survey compatible avec l’ID et le number_survey de d.</p>
+<p>…Et met tout ce nouveau dataframe dans un objet nommé d_s1</p>
+</blockquote>
+</section>
+<section id="enregistrer-notre-environnement-tout-nos-objets" class="level4">
+<h4 class="anchored" data-anchor-id="enregistrer-notre-environnement-tout-nos-objets">5. Enregistrer notre environnement = tout nos objets</h4>
+<p>Avec la disquette dans la fenêtre environnement. Quand vous ouvrez votre projet, l’environnement correspondant s’ouvre tout seul.</p>
+<p>Vous pouvez aussi sauvegarder la nouvelle base en format R grace a <code>saveRDS()</code> .</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(d_join,</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">file=</span><span class="st">"TD1/Data/d_complete_s1.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="v.-ce-quon-aurai-pu-faire-facilement-avec-tidyverse-à-ce-stade" class="level3">
+<h3 class="anchored" data-anchor-id="v.-ce-quon-aurai-pu-faire-facilement-avec-tidyverse-à-ce-stade">V. Ce qu’on aurai pu faire facilement avec tidyverse à ce stade</h3>
+<section id="tidyverse" class="level4">
+<h4 class="anchored" data-anchor-id="tidyverse">1. Tidyverse</h4>
+<section id="a.-la-logique-tidyverse" class="level5">
+<h5 class="anchored" data-anchor-id="a.-la-logique-tidyverse">a. La logique tidyverse</h5>
+<p>Le terme <strong>tidyverse</strong> est une contraction de <em>tidy</em> (qu'on pourrait traduire par "bien rangé") et de <em>universe</em>. Il s'agit en fait d'une collection d'extensions conçues pour travailler ensemble et basées sur une philosophie commune.</p>
+<p>Elles abordent un très grand nombre d'opérations courantes dans <strong>R</strong> (la liste n'est pas exhaustive)&nbsp;:</p>
+<ul>
+<li><p>visualisation</p></li>
+<li><p>manipulation des tableaux de données</p></li>
+<li><p>import/export de données</p></li>
+<li><p>manipulation de variables</p></li>
+<li><p>extraction de données du Web</p></li>
+<li><p>programmation</p></li>
+</ul>
+<p>Un des objectifs de ces extensions est de fournir des fonctions avec une syntaxe cohérente, qui fonctionnent bien ensemble, et qui retournent des résultats prévisibles. Elles sont en grande partie issues du travail d'<a href="http://hadley.nz/">Hadley Wickham</a>, qui travaille désormais pour <a href="https://www.rstudio.com/">RStudio</a></p>
+</section>
+<section id="b.-le-pipe" class="level5">
+<h5 class="anchored" data-anchor-id="b.-le-pipe">b. Le pipe</h5>
+<p><a href="https://larmarange.github.io/guide-R/manipulation/pipe.html" class="uri">https://larmarange.github.io/guide-R/manipulation/pipe.html</a></p>
+<p>Quand on a plusieurs fonctions à la suite, au lieu d’en mettre pleins les unes dans les autres et qu’on s’y retrouve plus.<br>
+Pas besoin de répéter la base de donnée à chaque fois grace au pipe %&gt;% (raccourci CTRL+shift+M)</p>
+<p>“Prenons un exemple. Supposons que nous ayons un vecteur numérique <code>v</code> dont nous voulons calculer la moyenne puis l'afficher via un message dans la console. Pour un meilleur rendu, nous allons arrondir la moyenne à une décimale, mettre en forme le résultat à la française, c'est-à-dire avec la virgule comme séparateur des décimales, créer une phrase avec le résultat, puis l'afficher dans la console. Voici le code correspondant, étape par étape.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.2</span>, <span class="fl">8.7</span>, <span class="fl">5.6</span>, <span class="fl">11.4</span>) </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">mean</span>(v)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">round</span>(m, <span class="at">digits =</span> <span class="dv">1</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">format</span>(r, <span class="at">decimal.mark =</span> <span class="st">","</span>)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"La moyenne est de "</span>, f, <span class="st">"."</span>) </span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>La moyenne est de 6,7.</code></pre>
+<p>Cette écriture, n'est pas vraiment optimale, car cela entraîne la création d'un grand nombre de variables intermédiaires totalement inutiles. Nous pourrions dès lors imbriquer les différentes fonctions les unes dans les autres&nbsp;:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="fu">paste0</span>(<span class="st">"La moyenne est de "</span>, <span class="fu">format</span>(<span class="fu">round</span>(<span class="fu">mean</span>(v),<span class="at">digits =</span> <span class="dv">1</span>), <span class="at">decimal.mark =</span> <span class="st">","</span>), <span class="st">"."</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>La moyenne est de 6,7.</code></pre>
+<p>Nous obtenons bien le même résultat, mais la lecture de cette ligne de code est assez difficile et il n'est pas aisé de bien identifier à quelle fonction est rattaché chaque argument.</p>
+<p>Une amélioration possible serait d'effectuer des retours à la ligne avec une indentation adéquate pour rendre cela plus lisible.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>( </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(  </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"La moyenne est de "</span>,  </span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(       </span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(        </span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mean</span>(v),   </span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">1</span>), </span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimal.mark =</span> <span class="st">","</span>    </span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"."</span>  </span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>La moyenne est de 6,7.</code></pre>
+<p>C'est déjà mieux, mais toujours pas optimal.</p>
+<p>Le pipe permet de passer l’élément situé à sa gauche comme premier argument de la fonction situé à droite.</p>
+<p>Donc au lieu de préciser à chaque fois ce qu’il y a avant, on utilise le place holder <strong><code>.</code></strong> c’est à dire quelque chose qui remplace le fait de devoir nommer tout ce qui précède.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>v <span class="sc">%&gt;%</span>    </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>() <span class="sc">%&gt;%</span>  <span class="co"># parfois on est pas obligé de mettre le place holder. </span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="at">digits =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(<span class="at">decimal.mark =</span> <span class="st">","</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">"La moyenne est de "</span>,.,<span class="st">"."</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>Le pipe peut se traduire facilement en français par <strong>“et ensuite” ou “puis”</strong></p>
+<p>Ici la commande se traduit littéralement et facilement en :<br>
+Prend v ET ENSUITE<br>
+Fais en la moyenne PUIS<br>
+Arroundi à un chiffre après la virgule PUIS<br>
+Formate pour mettre une virgule PUIS<br>
+Forme un message qui dira “La moyenne est de <strong><em>resultats des fonctions précédentes</em>.”</strong> PUIS<br>
+Affiche le message</p>
+</blockquote>
+</section>
+</section>
+<section id="trouver-facilement-la-variable-education" class="level4">
+<h4 class="anchored" data-anchor-id="trouver-facilement-la-variable-education">2. Trouver facilement la variable Education</h4>
+<p>Surtout si on ne sait pas bien comment elle s’appelle.<br>
+On aurai pu dire à R : prend d et selectionne une variable dont le nom commence par “Edu” ou contient “Edu” et donne moi son nom:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"edu"</span>) <span class="sc">|</span> <span class="fu">contains</span>(<span class="st">"edu"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>character(0)</code></pre>
+</div>
+</div>
+<p>Ici il y en a pas, on aurait vite vu qu’il manquait la variable, ce qui est pratique quand on a un nombre important de variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>d_educ <span class="sc">%&gt;%</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"edu"</span>) <span class="sc">|</span> <span class="fu">contains</span>(<span class="st">"edu"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Education"</code></pre>
+</div>
+</div>
+<p>C’est nottament pratique quand on veut sélectionner d’un coup des variables ayant un pattern similaire dans le nom.</p>
+</section>
+<section id="filtrer-le-dataframe-d_educ-pour-quil-naffiche-que-les-données-venant-de-la-première-vague-de-survey-avant-de-le-joindre." class="level4">
+<h4 class="anchored" data-anchor-id="filtrer-le-dataframe-d_educ-pour-quil-naffiche-que-les-données-venant-de-la-première-vague-de-survey-avant-de-le-joindre.">3. Filtrer le dataframe d_educ pour qu’il n’affiche que les données venant de la première vague de survey avant de le joindre.</h4>
+<p>On veut:</p>
+<blockquote class="blockquote">
+<p>Dans un objet d_join<br>
+Prend d_educ <strong>PUIS</strong><br>
+Filtre ou créer un sous ensemble avec ceux dont number_survey==1 <strong>PUIS</strong><br>
+Join le avec le dataframe d en fonction de ID.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>d_join<span class="ot">=</span>d_educ <span class="sc">%&gt;%</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(number_survey<span class="sc">==</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(d, </span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>            .,</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ID"</span>,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"number_survey"</span>)) <span class="co"># Je le remet ici pour eviter la duplication</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Verifiez qu'il n'y a pas de ligne rajouté par rapport à d. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

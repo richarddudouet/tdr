@@ -1,0 +1,904 @@
+---
+title: "Initiation à R: TD n°1"
+format:
+  html:
+    toc: true        # active le sommaire
+    toc-location: left   # ou right
+    toc-depth: 5
+editor: visual
+---
+
+```{=html}
+<style>
+h3 {
+  margin-top: 4em;  /* espace avant chaque sous-titre h3 */
+}
+
+h4 {
+  margin-top: 2em;  /* espace avant chaque sous-titre h3 */
+}
+
+h3 {
+  border: 3px solid black;
+  border-radius: 35px;
+  padding: 1em;
+}
+
+h4 {
+  display: inline-block;
+  border: 3px solid black;
+  border-radius: 35px;
+  padding: 0.5em;
+}
+
+h5 {
+  display: inline-block;
+  border: 2px solid grey;
+  border-radius: 35px;
+  padding: 0.5em;
+}
+
+h6 {
+  display: inline-block;
+  border: 2px dotted gray;
+  border-radius: 35px;
+  padding: 0.5em;
+  color: grey;
+}
+
+
+/* ——— Ajouts pour le pliage des sections ——— */
+h3.foldable, h4.foldable, h5.foldable, h6.foldable {
+  cursor: pointer;
+  position: relative;
+  padding-right: 2em; /* espace pour la flèche */
+}
+h3.foldable::after, h4.foldable::after, h5.foldable::after, h6.foldable::after {
+  content: "▾";              /* flèche vers le bas = ouvert */
+  position: absolute;
+  right: 0.6em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 600;
+}
+
+/* Cache tout le contenu d’une section pliée, sauf son titre */
+section.folded > :not(h2):not(h3):not(h4):not(h5):not(h6) { display: none; }
+/* Cache les sous-sections imbriquées quand le parent est plié */
+section.folded > section { display: none; }
+/* Flèche fermée */
+section.folded > .foldable::after { content: "▸"; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Niveaux de titres repliables (modifie si besoin)
+  const foldableLevels = [ 3, 4, 5, 6];  // h3..h6
+
+  // Pour plier automatiquement à l’ouverture à partir d’un niveau donné,
+  // mets un nombre (ex: 4 pour plier h4+). Laisse null pour ne rien plier par défaut.
+  const defaultCollapseFromLevel = 3;
+
+  function toggle(sec, heading){
+    const folded = sec.classList.toggle('folded');
+    heading.setAttribute('aria-expanded', String(!folded));
+  }
+
+  foldableLevels.forEach(level => {
+    document.querySelectorAll(`section.level${level}`).forEach(sec => {
+      const heading = sec.querySelector(`:scope > h${level}`);
+      if (!heading) return;
+
+      // Accessibilité + style
+      heading.classList.add('foldable');
+      heading.setAttribute('role', 'button');
+      heading.setAttribute('tabindex', '0');
+      heading.setAttribute('aria-expanded', 'true');
+
+      // Clic (en ignorant le clic sur l’ancre de lien du titre)
+      heading.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        toggle(sec, heading);
+      });
+      // Clavier (Entrée ou Espace)
+      heading.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle(sec, heading);
+        }
+      });
+
+      // État initial (plié/déplié) configurable
+      if (defaultCollapseFromLevel && level >= defaultCollapseFromLevel) {
+        sec.classList.add('folded');
+        heading.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+});
+</script>
+</style>
+```
+## Objectifs
+
+-   R: pourquoi R? Comment télécharger? Pourquoi R Studio ?
+
+-   Travailler proprement et de façon organisée
+
+-   Se familiariser avec l'interface de R Studio
+
+-   Comprendre la logique et les fondamentaux de R : objets, vecteurs, listes, data frames
+
+-   Importer plusieurs bases de données et les joindre correctement
+
+-   Introduction au tidyverse
+
+## Valeurs fondamentales
+
+-   Si Stata est un enfant de 10 ans, R est un enfant de 2 ans à qui il faut tout dire
+
+<!-- -->
+
+-   Comprenez ce que vous faites
+
+-   L'apprentissage c'est de l'essai - erreur
+
+-   Ne vous laissez pas emporter par le logiciel : sachez à l'avance ce que vous voulez faire
+
+-   Ne vous laissez pas avoir par les IA, si vous les utilisez maitrisez d'abord le logiciel. Vous perdrez du temps, de l'énergie et vous ferez des erreurs sinon.
+
+## Mise en situation directe
+
+*C'est votre premier jour de stage, avant même de vous adresser la parole, votre maitre de stage vous envoie les données sur lesquelles vous allez travailler*. *Il passe la tête à la porte de votre bureau :*
+
+> *Maitre de stage*: T'as reçu? Ah et à cause de toi, puisqu'on doit te "payer" apparamment, on peut plus payer la licence de Stata, travaille sur R stp.
+>
+> *Vous*: OK
+>
+> *Maitre de stage:* Est ce que tu penses que le niveau d'éducation est lié à l'IMC?
+>
+> *Vous*: Je sais pas ?
+>
+> *Maitre de stage:* Ben cherche.
+
+### I. Pourquoi R ? Comment télécharger? Pourquoi R studio?
+
+-   Gratuit
+
+-   Une grande communauté avec beaucoup de ressources
+
+-   Plus grandes possibilités et flexibilité
+
+Ressource créée par Benoit Lepage : <https://benoitlepage.github.io/formationR>\
+Ressource incroyable de Larmarange : <https://larmarange.github.io/analyse-R/>
+
+### II. Premier contact avec R studio
+
+#### 0. Mettez vous à l'aise
+
+Le confort de travail est largement sous estimé: changez le thème, mettez les fonctions en avant, mettez des couleurs au parenthèses, cherchez et trouvez votre façon de travailler.
+
+***Tools**-\>Global options-\>Code-\>Display-\>Syntax\
+**Tools**-\>Global options*-\>*Appearance*
+
+Vous pouvez même changer la taille et la disposition des fenêtres.
+
+#### 1. La première chose à faire: créer un projet
+
+Tout en haut à droite -\> **New project**-\> New Directory (\*=dossier de travail)-\> New project -\> Nommez le fichier
+
+Le projet permet d'ouvrir tout en même temps, permet de rester organiser dans un fichier directeur. Lorsque vous allez enregistrer quoi que ce soit dans R, tout va aller dans le dossier directeur ou dans un sous dossier que vous aurez créer.\
+C'est très important pour s'y retrouver quand vous avez plusieurs projets ou que vous devez transmettre votre travail à quelqu'un qui va continuer.
+
+#### 2. La deuxième chose à faire : s'organiser {.tabset}
+
+Dans R, vous pouvez créer et organiser vos fichier, croyez moi sur parole c'est pratique, nous verrons plus tard pourquoi.
+
+##### a. Créer les 3 fichiers dans l'onglet "Files" en bas à droite
+
+Au début de tout projet, pour rester organisé vous voulez toujours créer 3 Fichiers:
+
+-   un pour vos **Scripts** ou il y aura vos codes
+
+-   un dossier **Data** ou il y aura les bases de données et l'environnement R
+
+-   un dossier **Results** pour vos Figures et Tableaux.
+
+    Vous pouvez le faire dans R.
+
+##### b. Créer un script
+
+En haut à gauche cliquez sur la ***page blanche avec un + vert*** et choissisez ***R Script*****.** Le script permet de retrouver les fonctions qu'on écrit aussi pour que notre travail soit reproductible.
+
+Pour qu'il soit reproductible il faut l'organiser et l'annoter. Vous devez être capable de trouver les éléments rapidement, de suivre votre plan d'analyse et de savoir ce que vous faites. Quelqu'un qui ne connait pas R devrait en théorie savoir lire votre script. (J'exagère un peu mais on m'a déjà dit et demandé ça, les plus vieux travaillent souvent sur SAS).
+
+###### Organiser son script :
+
+Avec des titres et la date de création et de dernière modification :\
+- avec `#` en début de ligne pour indiquer que ce sont des commentaires et pas du code à exécuter\
+- `"----"`Permet de dire à R que c'est le titre d'une section\
+- Vous pouvez retrouver les sections en cliquant sur le bouton ***Outline*** en haut à droite de la fenêtre ou se trouve le script
+
+```{r, eval=FALSE}
+
+#____________________________________________________________________________----
+#____________________________________________________________________________----
+#____________________________________________________________________________----
+#           STAGE M2: TITRE DU SCRIPT ----
+#____________________________________________________________________________----
+#____________________________________________________________________________----
+#____________________________________________________________________________----
+# Date de création: 
+# Date de dernière modification: 
+
+# 0. Setup ----
+#__________----
+## a. Packages à charger----
+## b. Environnement à charger----
+
+#____________________________________________________________________________----
+# 1. Importation de la base ----
+#___________________________----
+## a. Sous titre 1----
+## b. Sous titre 2----
+## c. Sous titre 3----
+### i. sous-sous titre----
+
+#___________________________________________________________________________----
+# 2. Section 2 ----
+#___________________________----
+## a. Sous titre 1----
+## b. Sous titre 2----
+## c. Sous titre 3----
+### i. sous-sous titre----
+
+```
+
+#### 3) La troisième chose à faire: charger les packages
+
+Les packages sont là pour rajouter des fonctions qui ne sont pas disponible dans r à la base.\
+C'est un des grands avantages de R. On peut les installer directement dans R en cliquant sur Install. ou avec la fonction `install.packages()`.
+
+Certains packages permettent de changer completement la logique de R, ou peuvent énormément aider pour créer des tableaux presque près pour présenter des résultats, faire des analyses plus poussées, des graphiques etc..
+
+On peut par exemple installer le fameux package tidyverse qui change notre façon de coder et qui (selon moi) rend les choses plus simples et plus logiques:
+
+```{r, eval=FALSE, warning=FALSE, message=FALSE}
+install.packages(tidyverse) # tapez cette commande dans la console (fenêtre en bas à gauche)
+```
+
+Voyez au passage que les fonctions dans R comprennent toujours des parenthèses après le nom de la fonction.
+
+Pour pouvoir utiliser les fonctions d'un package il faut le "charger" au début de la session, pour eviter à R d'utiliser toutes ses ressources pour charger toutes les fonction installés à chaque fois. Pour charger un package utilisez la fonction `library()`.
+
+```{r, eval=FALSE}
+library(tidyverse)
+```
+
+D'ailleurs, si vous avez une question sur une fonction, vous pouvez demander directement a r studio avec un simple `?` avant le nom de la fonction:
+
+```{r, eval=FALSE}
+?tidyverse
+```
+
+C'est en fait le premier réflexe qu'on doit avoir quand on veut savoir comment marche une fonction, avant internet ou de se ruer sur les chatbots. Pour gagner du temps.
+
+Nous y reviendrons.
+
+Je vous conseille de mettre toutes les commandes `library()` en début de script comme suit:
+
+```{r, eval=FALSE}
+
+# Setup----
+#______----
+library(tidyverse)
+library(crosstable)
+library(ggplot2)
+
+```
+
+### III. Importer des bases de données
+
+Pour cela vous pouvez cliquer sur *Import Dataset* dans la fenêtre en haut à droite: Environment.\
+Mais pour que cela fonctionne, il faut savoir sous quel extension est votre base.
+
+*.csv* -\> from text (readr) (coma seperated values), s'ouvre avec excel attention.\
+*.xls ou .xlsx* -\> from excel\
+Possible stata, sass, spss
+
+#### 1) Importer la première base: nhanes.xlsx
+
+*Import Dataset*-\> From excel-\> Browse
+
+Regarder en bas à droite: cela va créer automatiquement le code pour importer la base de donnée, que vous auriez pu faire pour importer. Il y a également des options interessantes que vous pouvez tester, vous pouvez aussi changer le nom d'apparition dans l'environnement, regardez comment cela change la fonction.
+
+*Cliquez sur OK* -\> dans la fenêtre en haut à droite *Environment* on voit que les datas apparaissent sous le nom qu'on a choisi.\
+Félicitation, vous venez de créer votre premier `Objet`
+
+##### a. Fondamentaux: Objets, vecteurs, dataframes
+
+###### *Les objet*s
+
+-   **C'est quoi ?**
+
+Un `Objet` c'est le fourre tout de R.\
+Vous pouvez stocker ce que vous voulez dans un objet R: des données, des fonctions, une suite de chiffres, chaines de charactères, un peu ce que vous voulez...
+
+-   **Ca sert à quoi ?**
+
+Ca sert à stocker quelque chose mais aussi à s'y retrouver et s'organiser, parce qu'en nommant quelque chose pour le retrouver on va pouvoir s'y référer dans le code.
+
+> *Personnellement mes données sont notés "d_description", mes tableaux "t_description", mes fonction "f_description" mes* figures *"p_description" (p pour plot) etc...*
+
+-   **Comment on le créé?**
+
+Pour créer un objet dans R c'est le fameux `<-` .\
+*Le signe `=` marche aussi mais est moins recommandé car sert pour d'autres choses.*
+
+-   **Comment on s'en sert?**\
+
+> Exemples:
+
+```{r}
+
+bonjour<-"Bonjour, je m'appelle Richard" # les chaines de caractères sont toujours entre "" 
+
+bonjour # si vous tapez bonjour dans la console ou le script, le message va s'afficher
+
+ad=2+2  #ça peut être aussi un résultat d'une opération
+ad # ça va afficher 4
+
+```
+
+Si on tape le nom de l'objet dans lequel on a mis nos données:
+
+```{r, eval=FALSE}
+nhanes
+```
+
+R va essayer de nous l'afficher en entier mais se limitera tout seul (et heureusement).\
+Si jamais on veut vérifier que les données ont bien été importées, on peut cliquer sur le petit icone de **Tableau** dans la fenêtre environment.
+
+Pour savoir quelle de quel classe est l'objet on pourra faire la fonction `class`
+
+```{r eval=FALSE}
+class(nhanes)
+class(ad)
+class(bonjour)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+load("C:/Users/richa/Desktop/Travail/4. Enseignement/td_r/TD1/Data/envtd1.RData")
+```
+
+###### *Vecteurs*
+
+-   **C'est quoi ?**
+
+Vous pouvez aussi stocker des `vecteurs` dans des objets : un `vecteur` est une suite de truc dans un ordre bien précis mais de même type.\
+
+> C'est à dire une suite de valeurs numériques est un `vecteur`, une suite de valeurs en texte est un `vecteur` mais une suite de nombre et de texte n'est pas un vecteur mais une `liste` !
+
+Ce qui veut aussi dire que les variables dans vos données sont des `vecteurs`, ils ont un seul type de données et on un ordre précis défini par les individu.
+
+-   **Ca sert à quoi ?**
+
+Un vecteur c'est donc souvent une variable mais il sert aussi souvent d'`argument` dans une `fonction.`
+
+-   **Comment on créé un vecteur ?**
+
+Pour créer un vecteur on utilise la fonction `c()`
+
+> `c` pour "combine"
+
+```{r}
+vecteur_nul_qui_sert_a_rien= c(1,2,3,4,5,6)
+vecteur_nul_qui_sert_a_rien
+
+vecteur_texte=c("Bonjour", "Salut", "Hello", "Hey", "Salud")
+vecteur_texte
+
+length(vecteur_texte) # la longueur du vecteur
+```
+
+> Remarques:
+>
+> -   Les vecteurs se mettent dans la section *Values* de la fenêtre environment
+>
+> -   Vous avez un aperçu de la classe et de la longueur du vecteur dans cette fenêtre aussi et des premières valeurs
+
+###### Data frames
+
+Un `data.frame` c'est un ensemble de vecteurs, c'est un tableau de données en fait.\
+Il aura donc 2 dimension :
+
+-   une horizontale : c'est les vecteurs côte à côte (les variables)
+
+-   une verticale: c'est l'ordre des valeurs dans chaque vecteur
+
+```{r}
+dim(nhanes)
+
+```
+
+Donne le nombre de lignes (souvent d'individus) et de colonnes (nombre de variables).\
+
+> *C'est déjà écrit dans la fenêtre environnement*
+
+##### b. Essayons de vraiment comprendre cette première commande
+
+> *Le code qui s'est affiché dans la console tout à l'heure quand on a importé*
+
+```{r, eval=FALSE}
+
+# A copier coller dans le script pour la REPRODUCTIBILITE
+
+# Importation de la première base----
+#________________________________----
+library(readxl) 
+nhanes <- read_excel("TD1/Data/nhanes.xlsx") 
+
+
+```
+
+###### Première fonction: `library(readxl)`
+
+Une fonction dans un r est toujours sous la forme `nomdelafonction(argument)`.\
+Un `argument` c'est une précision, une option pour dire à la fonction ce qu'on veut.\
+\
+Pour cette fonction on pourrait lire en français `library()`="*charge le package*" qui s'appelle `readxl.`
+
+###### Deuxième fonction: `nhanes<-read_excel("TD1/Data/nhanes.xlsx")`
+
+-   `read_excel()` est la fonction
+
+-   `"TD1/Data/nhanes.xlsx"` est l'argument.\
+    Cet argument est entre `""` car il va être pris dans la fonction en tant que texte.
+
+Pour voir l'ensemble des arguments qu'il est possible de mettre dans la fonction on peut faire `?read_excel ou help("read_excel")`
+
+```{r, eval=FALSE}
+# Usage
+# ne retenez pas tout ça c'est juste pour comprendre le fonctionnement 
+
+read_excel(   path,  
+              sheet = NULL, 
+              range = NULL, 
+              col_names = TRUE, 
+              col_types = NULL,  
+              na = "", 
+              trim_ws = TRUE, 
+              skip = 0, 
+              n_max = Inf, 
+              guess_max = min(1000, n_max), 
+              progress = readxl_progress(), 
+              .name_repair = "unique" ) 
+```
+
+Notez :
+
+-   qu'entre chaque argument il y a une `,`.pour dire à R "je change d'argument".
+
+-   que si on précise le nom d'un argument il faut le signe `=` pour lui donner
+
+<!-- -->
+
+-   que si nous ne précisons pas de quel argument nous parlons, R comprendra qu'il s'agit du premier, puis du deuxième etc.. dans l'ordre ou il est écrit dans l'aide.
+
+Certains arguments **doivent** être précisés : le logiciel ne veut pas décider à notre place quel fichier lire, donc on doit précisé `path`, c'est à dire l'emplacement du fichier.\
+D'autres ont des **valeurs par défaut :** si on ne précise pas, la fonction prendra ces valeurs comme argument.
+
+Dans notre exemple :
+
+```{r, eval=FALSE}
+nhanes<-read_excel("TD1/Data/nhanes.xlsx") 
+```
+
+Est l'équivalent de :
+
+```{r, eval=FALSE}
+nhanes<-read_excel(path="TD1/Data/nhanes.xlsx") 
+```
+
+> Comme c'était le premier argument, nous n'avons pas besoin de préciser `path=` . R va détecter qu'il s'agit du premier argument puisque c'est le seul.
+
+C'est aussi l'équivalent de :
+
+```{r, eval=FALSE}
+read_excel(   path="TD1/Data/nhanes.xlsx",  
+              # Valeurs par défaut : 
+              sheet = NULL, # Quelle feuille lire?
+              range = NULL, # De quelle cellule à quelle cellule?
+              col_names = TRUE, # Est ce que la première ligne est le nom des var?
+              col_types = NULL, # Si je veux préciser le type de variable (numérique, texte etc..)
+              na = "",  # Comment sont décrit les données manquantes?
+              trim_ws = TRUE, # Est ce qu'on garde les espaces vide ?
+              skip = 0, 
+              n_max = Inf, 
+              guess_max = min(1000, n_max), 
+              progress = readxl_progress(), 
+              .name_repair = "unique" ) 
+```
+
+> *Pour savoir à quoi correspond chaque argument et quoi mettre dedans, lisez la partie Arguments de l'aide.*
+
+Imaginons qu'on veuille que la première feuille et les 100 premières lignes du fichier on pourra écrire :
+
+```{r, eval= FALSE}
+
+# je stocke dans un objet au nom explicite
+nhanes_100<-read_excel("TD1/Data/nhanes.xlsx", # path
+            1, # numéro de la feuille
+            n_max=100) # arrête toi à 100 lignes
+```
+
+Ou pire :
+
+```{r, eval= FALSE}
+
+# je stocke dans un objet au nom explicite
+nhanes_100<-read_excel("TD1/Data/nhanes.xlsx",1,n_max=100) 
+```
+
+Mais ce sera donc beaucoup plus facile pour moi pour y comprendre quelque chose et pour rester organiser d'écrire :
+
+```{r, eval= FALSE}
+
+# je stocke dans un objet au nom explicite
+nhanes_100<-read_excel(path= "TD1/Data/nhanes.xlsx", # path
+                       sheet=1, # numéro de la feuille
+                       n_max=100) #arrête toi à 100 lignes
+```
+
+> **IMPORTANT : Pour moi, le fait que chaque argument soit PRECISE et EN DEBUT DE LIGNE me fait gagner un temps considérable quand j'ai beaucoup de fonction ou d'arguments. C'est aussi plus lisible quand on code verticalement (pas besoin de scroll horizontallement).**
+
+Du coup on ne pourra pas écrire:
+
+```{r, eval= FALSE}
+# je stocke dans un objet au nom explicite 
+nhanes_100<-read_excel("TD1/Data/nhanes.xlsx",             
+                       1,              
+                       100) # Car il prendra 100 comme le troisième argument qui devrait être une range de cellule. 
+```
+
+-   Le nom des variables et leur type un peu comme describe ou codebook dans stata:
+
+```{r eval= FALSE}
+str(nhanes)
+summary(nhanes)
+names(nhanes)
+
+```
+
+Il manque la variable de niveau d'éducation.
+
+#### 2) Importer la deuxième base
+
+> A vous de jouer. Importez la deuxième base.
+
+```{r, eval=FALSE}
+library(readr)
+data_educ <- read_delim("TD1/Data/data_educ.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+```
+
+### IV. Joindre des bases de données
+
+#### 0. Pourquoi ?
+
+> `names(nhanes_educ)` : c'est dans cette base qu'on à le niveau d'éducation.\
+> On veut donc joindre les deux bases.
+>
+> *Pour exécuter une ligne dans Rstudio, mettez votre curseur sur une ligne du script et faite\
+> **Ctrl + D***
+
+Souvent, les bases de données arrivent en plusieurs morceaux pour plusieurs raisons :
+
+-   des questionnaires différents
+
+-   des vagues de réponses différentes
+
+Ce qu'on veut c'est souvent un seul data frame sur lequel travailler.
+
+> On doit donc absolument vérifier les différences entre les bases de données\
+> On doit donc absolument s'assurer qu'on ne modifie pas le dataframe de départ\
+> Notamment si on fait une erreur de code et qu'on modifie notre base de travail, on doit pouvoir repartir de notre base d'origine.
+
+#### 1. La première chose à faire : copier les dataframes dans un nouvel objet avec un nom court
+
+Il ne faut pas travailler sur la base d'origine au cas ou on aurai fait une erreur.
+
+De plus, dans R, on doit toujours préciser dans les fonctions sur quelles données on travaille.\
+Notamment pour mentionner une variable dans un dataframe, on utilise le signe `$`.\
+Si on travaille en R de base on se retrouve donc à répéter `labase$lavariable.`
+
+```{r, eval=FALSE}
+nhanes_educ$Education 
+```
+
+Donc pour travailler, on utilise des noms courts et simples\
+Pour copier un objet vers un objet qu'on nomme plus simplement il suffit de faire :
+
+```{r, eval=FALSE}
+d<-nhanes # prend nhanes et met le dans d
+d=nhanes # le nouvel objet en premier
+
+d_educ=nhanes_educ
+
+```
+
+#### 2. La deuxième chose à faire : décrire succintement les données
+
+Au début vous avez envie de connaitre un peu vos données.
+
+> Vous pouvez les parcourir visuellement avec l'icone en forme de tableau dans la fenêtre environnement ou avec la fonction `view()`
+
+Mais vous voulez aussi les décrires vite fait pour vous rendre compte de ce que vous avez entre les mains, comme avec la fonction `describe()` ou `str()` .
+
+Mais aussi la fonction `create_report` du package `DataExplorer` qui montre la puissance de R et de ses packages.\
+
+```{r, eval=FALSE}
+# str 
+str(d) # Mais disponible en cliquant sur la flèche dans environnement
+
+# Describe de Hmisc :
+library(Hmisc)
+describe(d)
+
+# Create report de DataExplorer
+library(DataExplorer)
+create_report(data=d)
+create_report(data=d_educ)
+```
+
+#### 3. La troisième chose à faire : vérifier les différences entre les dataframes
+
+Ici on essaie de rajouter la variable de niveau d'éducation à notre base d.\
+Si on essaie de rajouter des colonnes à un dataframe il faut qu'ils aient le même nombre de lignes ou qu'on en connaissent les différences.
+
+Quand on a deux dataframes à joindre il faut toujours vérifier :
+
+###### Si il y a une différence de nombre de ligne entre les deux dataframes
+
+```{r}
+nrow(d)-nrow(d_educ) # nrow=littéralement nombre de ligne
+```
+
+###### Si il y a bien une ligne par ID dans chaque dataframe
+
+Pour voir si un élément est écrit plusieurs fois dans une variable, on peut faire la commande `duplicated()` .
+
+```{r, eval=FALSE}
+duplicated(x= d_educ$ID)
+```
+
+`duplicated` va regarder ligne par ligne dans `d$ID` si la valeur est présente plus d'une fois: Il va dire TRUE à chaque fois que c'est vrai et FALSE à chaque fois que c'est faux, mais c'est pas le résultat qu'on veut. Nous on veut savoir **combien** sont présent plus d'une fois.
+
+Dans r `summary` permet de faire un résumé en s'adaptant à l'objet qu'on lui donne en argument.\
+Ici il va compter combien sont présent plus d'une fois (TRUE) et combien sont présent qu'une fois (FALSE).
+
+```{r}
+summary(
+  object=duplicated(x=d_educ$ID)) # Une fonction dans une fonction !
+```
+
+> La fonction dit : "Parcours chaque ligne et dit moi si il y a un dupliqué dans l'ID. Ensuite fait moi un résumé de tes trouvailles".
+>
+> Remarquez que pour les fonctions imbriquées, la logique est un peu inversé par rapport à notre façon de penser: \
+> Nous pensons d'abord à chercher les doublons puis à faire un résumé alors que R nous fais écrire summary en premier.
+
+Ce chiffre correspond bien à la différences de lignes entre les deux. Il n'y a pas d'individus en plus ou en moins.
+
+d_educ ne contient pas une ligne par ID mais plusieurs alors que d non :
+
+```{r}
+summary(
+  duplicated(d$ID))
+```
+
+#### 4. Quatrième chose à faire: savoir ce qu'on veut et exécuter
+
+> Votre maitre de stage vous informe que dans la base de données avec le niveau d'éducation, il y a les éléments d'autres vague de réponses mais que nous allons nous interessé seulement à la première. Dans la base nhanes (d), il nous confirme qu'il n'y a que les résultats de la vague 1 (number_survey==1).
+
+**Qu'est ce qu'on veut exactement :** En se basant sur le numéro d'ID, joindre le niveau d'éducation de la base d_educ vers les données d en ne gardant que les données de la vague number_survey 1.
+
+Voici nos options pour joindre les deux dataframes :
+
+-   `inner_join(x, y, by = "col")` → garde **seulement les correspondances** (intersection).
+
+<!-- -->
+
+-   `left_join(x, y, by = "col")` → garde **toutes les lignes de x** (table de gauche), ajoute ce qui matche dans y
+
+-   `right_join(x, y, by = "col")` → garde **toutes les lignes de y** (table de droite).
+
+<!-- -->
+
+-   `full_join(x, y, by = "col")` → garde **toutes les lignes de x et y** (union).
+
+```{r eval=FALSE}
+
+# Je choisi left_join
+#____________________
+
+?left_join
+d_s1=left_join(x=d, 
+                 y=d_educ, 
+                 by=c("ID", "number_survey"))
+
+# Description argument par argument : 
+#_____________________________________
+d_s1=left_join(x=d, # Le premier dataframe dont on veut garder toutes les lignes
+                 y=d_educ, # Le deuxième dataframe dont on veut sup des lignes
+                 by=c("ID", "number_survey")) # On veut garder les lignes si les élément de d_educ ont le même ID et le même nombre de number_survey. Quant on veut mettre plusieurs élément dans un argument, c'est la qu'on utilise le vecteur ! 
+
+
+# N'oubliez pas pour verifier: 
+#______________________________
+summary(d_join$number_survey) # Il ne sont que = 1 !
+# Summary donne ici le résumé d'une variable numérique (donc la description habituelle)
+
+```
+
+> En français cela donne: "Ajoute dans d les lignes de d_educ qui ont un ID et un number_survey compatible avec l'ID et le number_survey de d.
+>
+> ...Et met tout ce nouveau dataframe dans un objet nommé d_s1
+
+#### 5. Enregistrer notre environnement = tout nos objets
+
+Avec la disquette dans la fenêtre environnement. Quand vous ouvrez votre projet, l'environnement correspondant s'ouvre tout seul.
+
+Vous pouvez aussi sauvegarder la nouvelle base en format R grace a `saveRDS()` .
+
+```{r, eval=FALSE}
+saveRDS(d_join,
+        file="TD1/Data/d_complete_s1.rds")
+```
+
+### V. Ce qu'on aurai pu faire facilement avec tidyverse à ce stade
+
+#### 1. Tidyverse
+
+##### a. La logique tidyverse
+
+Le terme **tidyverse** est une contraction de *tidy* (qu\'on pourrait traduire par \"bien rangé\") et de *universe*. Il s\'agit en fait d\'une collection d\'extensions conçues pour travailler ensemble et basées sur une philosophie commune.
+
+Elles abordent un très grand nombre d\'opérations courantes dans **R** (la liste n\'est pas exhaustive) :
+
+-   visualisation
+
+-   manipulation des tableaux de données
+
+-   import/export de données
+
+-   manipulation de variables
+
+-   extraction de données du Web
+
+-   programmation
+
+Un des objectifs de ces extensions est de fournir des fonctions avec une syntaxe cohérente, qui fonctionnent bien ensemble, et qui retournent des résultats prévisibles. Elles sont en grande partie issues du travail d\'[Hadley Wickham](http://hadley.nz/), qui travaille désormais pour [RStudio](https://www.rstudio.com/)
+
+##### b. Le pipe
+
+<https://larmarange.github.io/guide-R/manipulation/pipe.html>
+
+Quand on a plusieurs fonctions à la suite, au lieu d'en mettre pleins les unes dans les autres et qu'on s'y retrouve plus. \
+Pas besoin de répéter la base de donnée à chaque fois grace au pipe %\>% (raccourci CTRL+shift+M)
+
+"Prenons un exemple. Supposons que nous ayons un vecteur numérique `v` dont nous voulons calculer la moyenne puis l\'afficher via un message dans la console. Pour un meilleur rendu, nous allons arrondir la moyenne à une décimale, mettre en forme le résultat à la française, c\'est-à-dire avec la virgule comme séparateur des décimales, créer une phrase avec le résultat, puis l\'afficher dans la console. Voici le code correspondant, étape par étape.
+
+```{r, eval=FALSE}
+v <- c(1.2, 8.7, 5.6, 11.4) 
+m <- mean(v)
+r <- round(m, digits = 1)
+f <- format(r, decimal.mark = ",")
+p <- paste0("La moyenne est de ", f, ".") 
+message(p)
+```
+
+```         
+La moyenne est de 6,7.
+```
+
+Cette écriture, n\'est pas vraiment optimale, car cela entraîne la création d\'un grand nombre de variables intermédiaires totalement inutiles. Nous pourrions dès lors imbriquer les différentes fonctions les unes dans les autres :
+
+```{r, eval=FALSE}
+message(paste0("La moyenne est de ", format(round(mean(v),digits = 1), decimal.mark = ","), "."))
+```
+
+```         
+La moyenne est de 6,7.
+```
+
+Nous obtenons bien le même résultat, mais la lecture de cette ligne de code est assez difficile et il n\'est pas aisé de bien identifier à quelle fonction est rattaché chaque argument.
+
+Une amélioration possible serait d\'effectuer des retours à la ligne avec une indentation adéquate pour rendre cela plus lisible.
+
+```{r, eval=FALSE}
+message( 
+  paste0(  
+  "La moyenne est de ",  
+  format(       
+    round(        
+      mean(v),   
+        digits = 1), 
+    decimal.mark = ","    
+  ), 
+  "."  
+ )
+)
+```
+
+```         
+La moyenne est de 6,7.
+```
+
+C\'est déjà mieux, mais toujours pas optimal.
+
+Le pipe permet de passer l'élément situé à sa gauche comme premier argument de la fonction situé à droite.
+
+Donc au lieu de préciser à chaque fois ce qu'il y a avant, on utilise le place holder **`.`** c'est à dire quelque chose qui remplace le fait de devoir nommer tout ce qui précède.
+
+```{r eval=FALSE}
+v %>%    
+  mean() %>%  # parfois on est pas obligé de mettre le place holder. 
+  round(digits = 1) %>% 
+  format(decimal.mark = ",") %>%
+  paste0("La moyenne est de ",.,".") %>%  
+  message()
+```
+
+> Le pipe peut se traduire facilement en français par **"et ensuite" ou "puis"**
+>
+> Ici la commande se traduit littéralement et facilement en :\
+> Prend v ET ENSUITE\
+> Fais en la moyenne PUIS\
+> Arroundi à un chiffre après la virgule PUIS \
+> Formate pour mettre une virgule PUIS\
+> Forme un message qui dira "La moyenne est de ***resultats des fonctions précédentes*****."** PUIS\
+> Affiche le message
+
+#### 2. Trouver facilement la variable Education
+
+Surtout si on ne sait pas bien comment elle s'appelle. \
+On aurai pu dire à R : prend d et selectionne une variable dont le nom commence par "Edu" ou contient "Edu" et donne moi son nom:
+
+```{r}
+d %>% 
+  select(starts_with("edu") | contains("edu")) %>% 
+  names()
+```
+
+Ici il y en a pas, on aurait vite vu qu'il manquait la variable, ce qui est pratique quand on a un nombre important de variable.
+
+```{r}
+d_educ %>% 
+  select(starts_with("edu") | contains("edu")) %>% 
+  names() 
+```
+
+C'est nottament pratique quand on veut sélectionner d'un coup des variables ayant un pattern similaire dans le nom.
+
+#### 3. Filtrer le dataframe d_educ pour qu'il n'affiche que les données venant de la première vague de survey avant de le joindre. 
+
+On veut:
+
+> Dans un objet d_join\
+> Prend d_educ **PUIS**\
+> Filtre ou créer un sous ensemble avec ceux dont number_survey==1 **PUIS**\
+> Join le avec le dataframe d en fonction de ID.
+
+```{r, eval=FALSE}
+d_join=d_educ %>% 
+  subset(number_survey==1) %>% 
+  full_join(d, 
+            .,
+            by=c("ID",
+                 "number_survey")) # Je le remet ici pour eviter la duplication
+
+# Verifiez qu'il n'y a pas de ligne rajouté par rapport à d. 
+```
+
